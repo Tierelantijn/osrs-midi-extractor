@@ -9,12 +9,23 @@ import net.runelite.cache.fs.Store;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Utils {
 
     public static Store loadStore() throws IOException {
-        Store store = new Store(getDirectory("Choose OSRS cache directory"));
+        File directory = getDirectory("Choose OSRS cache directory");
+        if (!Files.exists(Paths.get(directory.getAbsolutePath() + File.separator + "main_file_cache.dat2"))) {
+            alert(Alert.AlertType.ERROR, "Error", "File main_file_cache.dat2 not found");
+            return null;
+        }
+        if (!Files.exists(Paths.get(directory.getAbsolutePath() + File.separator + "main_file_cache.idx255"))) {
+            alert(Alert.AlertType.ERROR, "Error", "File main_file_cache.idx255 not found");
+            return null;
+        }
+        Store store = new Store(directory);
         store.load();
         return store;
     }

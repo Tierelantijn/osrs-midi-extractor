@@ -26,7 +26,9 @@ public class MidiDumper {
 
     public void dump() {
         try (Store store = Utils.loadStore()) {
-            dumpAllMidi(store);
+            if (store != null) {
+                dumpAllMidi(store);
+            }
         } catch (IOException e) {
             alert(Alert.AlertType.ERROR, "Error", "Failed to load cache: " + e.getMessage());
         }
